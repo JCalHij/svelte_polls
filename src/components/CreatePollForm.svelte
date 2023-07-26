@@ -1,43 +1,76 @@
 <script>
   import Button from "../shared/Button.svelte";
-  let pollFields = {question: "", answerA: "", answerB: ""};
+  let pollFields = { question: "", answerA: "", answerB: "" };
+  let errors = { question: "", answerA: "", answerB: "" };
+  let valid = false;
 
   const onSubmitForm = () => {
-    console.log(pollFields);
+    valid = true;
+
+    if (pollFields.question.trim().length < 5) {
+      valid = false;
+      errors.question = "Question must be at least 5 characters long";
+    } else {
+      errors.question = "";
+    }
+    if (pollFields.answerA.trim().length < 1) {
+      valid = false;
+      errors.answerA = "Question must be at least 1 character long";
+    } else {
+      errors.answerA = "";
+    }
+    if (pollFields.answerB.trim().length < 1) {
+      valid = false;
+      errors.answerB = "Question must be at least 1 character long";
+    } else {
+      errors.answerB = "";
+    }
+
+    if (valid) {
+      // Emit new poll data
+    }
   };
 </script>
 
 <form on:submit|preventDefault={onSubmitForm}>
   <div class="form-field">
     <label for="question">Poll Question:</label>
-    <input type="text" id="question" bind:value={pollFields.question}>
+    <input type="text" id="question" bind:value={pollFields.question} />
+    <div class="error">{errors.question}</div>
   </div>
   <div class="form-field">
     <label for="answer-a">Answer A:</label>
-    <input type="text" id="answer-a" bind:value={pollFields.answerA}>
+    <input type="text" id="answer-a" bind:value={pollFields.answerA} />
+    <div class="error">{errors.answerA}</div>
   </div>
   <div class="form-field">
     <label for="answer-b">Answer B:</label>
-    <input type="text" id="answer-b" bind:value={pollFields.answerB}>
+    <input type="text" id="answer-b" bind:value={pollFields.answerB} />
+    <div class="error">{errors.answerB}</div>
   </div>
   <Button type={"secondary"} flat={true}>Add Poll</Button>
 </form>
 
 <style>
-  form{
+  form {
     width: 400px;
     margin: 0 auto;
     text-align: center;
   }
-  .form-field{
+  .form-field {
     margin: 18px auto;
   }
-  input{
+  input {
     width: 100%;
     border-radius: 6px;
   }
-  label{
+  label {
     margin: 10px auto;
     text-align: left;
+  }
+  .error {
+    font-weight: bold;
+    font-size: 12px;
+    color: #d91b42;
   }
 </style>
