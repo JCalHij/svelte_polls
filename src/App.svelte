@@ -6,8 +6,15 @@
   import PollList from "./components/PollList.svelte";
 
   // Polls
-  let GlobalId = 0;
-  let polls = [];
+  let GlobalId = 1;
+  let polls = [{
+    id:0, 
+    question: "C or C++?",
+    answerA: "C",
+    votesA: 9,
+    answerB: "C++",
+    votesB: 3,
+  }];
 
   // Tabs
   const CURRENT_POLL_TAB = "Current Polls";
@@ -31,8 +38,8 @@
     const newPoll = e.detail;
     const poll = {
       id: GlobalId,
-      aVotes: 0, 
-      bVotes: 0,
+      votesA: 0, 
+      votesB: 0,
       ...newPoll,
     };
     polls = [...polls, poll];

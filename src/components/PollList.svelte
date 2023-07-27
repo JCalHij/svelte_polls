@@ -1,11 +1,13 @@
 <script>
+  import PollDetails from "./PollDetails.svelte";
   export let polls;
 </script>
 
 <div class="poll-list">
   {#each polls as poll (poll.id)}
-    <p>{poll.answerA} - {poll.aVotes}</p>
-    <p>{poll.answerB} - {poll.bVotes}</p>
+    <div>
+      <PollDetails poll={poll} />
+    </div>
   {:else}
     <p>There are no polls available.</p>
   {/each}
