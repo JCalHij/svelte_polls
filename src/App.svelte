@@ -16,6 +16,26 @@
     votesB: 3,
   }];
 
+  /**
+   * @param {CustomEvent} e
+   */
+  const onNewVote = (e) => {
+    const {id, option} = e.detail;
+    const poll = polls.find((p) => p.id === id);
+    if (!poll) {
+      // We should never be able to go through here
+      console.log(`Unknown poll with ID ${id}`);
+      return;
+    }
+    if (option === "a") {
+      poll.votesA += 1;
+    }
+    else if (option === "b") {
+      poll.votesB += 1;
+    }
+    polls = polls;
+  };
+
   // Tabs
   const CURRENT_POLL_TAB = "Current Polls";
   const ADD_NEW_POLL_TAB = "Add New Poll";
@@ -54,7 +74,7 @@
 <main>
   <Tabs {items} {activeItem} on:tabClicked={onTabClicked} />
   {#if activeItem === CURRENT_POLL_TAB}
-    <PollList polls={polls}/>
+    <PollList polls={polls} on:voted={onNewVote}/>
   {:else if activeItem === ADD_NEW_POLL_TAB}
     <CreatePollForm on:newPoll={onNewPoll}/>
   {:else}

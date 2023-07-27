@@ -6,7 +6,7 @@
 <div class="poll-list">
   {#each polls as poll (poll.id)}
     <div>
-      <PollDetails poll={poll} />
+      <PollDetails poll={poll} on:voted/>
     </div>
   {:else}
     <p>There are no polls available.</p>
