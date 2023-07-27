@@ -3,6 +3,11 @@
   import Footer from "./components/Footer.svelte";
   import Tabs from "./shared/Tabs.svelte";
   import CreatePollForm from "./components/CreatePollForm.svelte";
+  import PollList from "./components/PollList.svelte";
+
+  // Polls
+  let GlobalId = 0;
+  let polls = [];
 
   // Tabs
   const CURRENT_POLL_TAB = "Current Polls";
@@ -17,23 +22,34 @@
     const tabClicked = e.detail;
     activeItem = tabClicked;
   };
+
+  /**
+   * Function callback for the CreatePollForm, when it emits a new poll.
+   * @param {CustomEvent} e
+   */
+  const onNewPoll = (e) => {
+    const newPoll = e.detail;
+    const poll = {
+      id: GlobalId,
+      aVotes: 0, 
+      bVotes: 0,
+      ...newPoll,
+    };
+    polls = [...polls, poll];
+
+    GlobalId += 1;
+
+    activeItem = CURRENT_POLL_TAB;
+  }
 </script>
 
 <Header />
 <main>
   <Tabs {items} {activeItem} on:tabClicked={onTabClicked} />
   {#if activeItem === CURRENT_POLL_TAB}
-    <p style="color: blue;">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-      est laborum.
-    </p>
+    <PollList polls={polls}/>
   {:else if activeItem === ADD_NEW_POLL_TAB}
-    <CreatePollForm/>
+    <CreatePollForm on:newPoll={onNewPoll}/>
   {:else}
     <p>This should not be visible...</p>
   {/if}
