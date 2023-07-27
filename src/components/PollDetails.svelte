@@ -4,6 +4,8 @@
   const dispatch = createEventDispatcher();
   export let poll;
   $: totalVotes = poll.votesA + poll.votesB;
+  $: percentA = Math.floor(100 * poll.votesA / totalVotes);
+  $: percentB = Math.floor(100 * poll.votesB / totalVotes);
 
   const onVoteClicked = (option, id) => {
     dispatch("voted", {option: option, id: id});
@@ -17,13 +19,13 @@
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div class="answer" on:click={()=>{onVoteClicked("a", poll.id);}}>
-      <div class="percent percent-a"></div>
+      <div class="percent percent-a" style="width: {percentA}%"></div>
       <span>{poll.answerA} ({poll.votesA})</span>
     </div>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div class="answer" on:click={()=>{onVoteClicked("b", poll.id);}}>
-      <div class="percent percent-b"></div>
+      <div class="percent percent-b" style="width: {percentB}%"></div>
       <span>{poll.answerB} ({poll.votesB})</span>
     </div>
   </div>
@@ -42,6 +44,7 @@
   }
   .answer{
     background-color: #fafafa;
+    border-radius: 8px;
     cursor: pointer;
     margin: 10px auto;
     position: relative;
@@ -52,5 +55,19 @@
   span{
     display: inline-block;
     padding: 10px 20px;
+  }
+  .percent{
+    height: 100%;
+    position: absolute;
+    box-sizing: border-box;
+    border-radius: 8px;
+  }
+  .percent-a{
+    border-left: 8px solid #d91b42;
+    background-color: rgba(217, 27, 66, 0.2);
+  }
+  .percent-b{
+    border-left: 8px solid #45c496;
+    background-color: rgba(69, 196, 150, 0.2);
   }
 </style>
