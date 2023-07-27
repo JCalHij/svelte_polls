@@ -1,7 +1,10 @@
 <script>
   import Button from "../shared/Button.svelte";
+  import PollStore from "../stores/PollStore";
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
+  
+  let GlobalId = 1;
 
   let pollFields = { question: "", answerA: "", answerB: "" };
   let errors = { question: "", answerA: "", answerB: "" };
@@ -30,7 +33,19 @@
     }
 
     if (valid) {
-      dispatch("newPoll", pollFields);
+      const poll = {
+        id: GlobalId,
+        votesA: 0, 
+        votesB: 0,
+        ...pollFields,
+      };
+      GlobalId += 1;
+      
+      PollStore.update((polls) => {
+        return [...polls, poll];
+      });
+
+      dispatch("newPoll");
     }
   };
 </script>
