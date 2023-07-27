@@ -7,33 +7,25 @@
 
   // Polls
   let GlobalId = 1;
-  let polls = [{
-    id:0, 
-    question: "C or C++?",
-    answerA: "C",
-    votesA: 9,
-    answerB: "C++",
-    votesB: 3,
-  }];
 
   /**
    * @param {CustomEvent} e
    */
   const onNewVote = (e) => {
-    const {id, option} = e.detail;
-    const poll = polls.find((p) => p.id === id);
-    if (!poll) {
-      // We should never be able to go through here
-      console.log(`Unknown poll with ID ${id}`);
-      return;
-    }
-    if (option === "a") {
-      poll.votesA += 1;
-    }
-    else if (option === "b") {
-      poll.votesB += 1;
-    }
-    polls = polls;
+    // const {id, option} = e.detail;
+    // const poll = polls.find((p) => p.id === id);
+    // if (!poll) {
+    //   // We should never be able to go through here
+    //   console.log(`Unknown poll with ID ${id}`);
+    //   return;
+    // }
+    // if (option === "a") {
+    //   poll.votesA += 1;
+    // }
+    // else if (option === "b") {
+    //   poll.votesB += 1;
+    // }
+    // polls = polls;
   };
 
   // Tabs
@@ -55,18 +47,18 @@
    * @param {CustomEvent} e
    */
   const onNewPoll = (e) => {
-    const newPoll = e.detail;
-    const poll = {
-      id: GlobalId,
-      votesA: 0, 
-      votesB: 0,
-      ...newPoll,
-    };
-    polls = [...polls, poll];
+    // const newPoll = e.detail;
+    // const poll = {
+    //   id: GlobalId,
+    //   votesA: 0, 
+    //   votesB: 0,
+    //   ...newPoll,
+    // };
+    // polls = [...polls, poll];
 
-    GlobalId += 1;
+    // GlobalId += 1;
 
-    activeItem = CURRENT_POLL_TAB;
+    // activeItem = CURRENT_POLL_TAB;
   }
 </script>
 
@@ -74,7 +66,7 @@
 <main>
   <Tabs {items} {activeItem} on:tabClicked={onTabClicked} />
   {#if activeItem === CURRENT_POLL_TAB}
-    <PollList polls={polls} on:voted={onNewVote}/>
+    <PollList on:voted={onNewVote}/>
   {:else if activeItem === ADD_NEW_POLL_TAB}
     <CreatePollForm on:newPoll={onNewPoll}/>
   {:else}
