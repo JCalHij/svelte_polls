@@ -4,8 +4,6 @@
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   
-  let GlobalId = 1;
-
   let pollFields = { question: "", answerA: "", answerB: "" };
   let errors = { question: "", answerA: "", answerB: "" };
   let valid = false;
@@ -34,12 +32,11 @@
 
     if (valid) {
       const poll = {
-        id: GlobalId,
+        id: Math.random(),
         votesA: 0, 
         votesB: 0,
         ...pollFields,
       };
-      GlobalId += 1;
       
       PollStore.update((polls) => {
         return [...polls, poll];
