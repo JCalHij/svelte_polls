@@ -2,10 +2,19 @@
   import Card from "../shared/Card.svelte";
   import PollStore from "../stores/PollStore";
   import Button from "../shared/Button.svelte";
+  import { tweened } from "svelte/motion";
+
   export let poll;
   $: totalVotes = poll.votesA + poll.votesB;
-  $: percentA = Math.floor((100 * poll.votesA) / totalVotes);
-  $: percentB = Math.floor((100 * poll.votesB) / totalVotes);
+  $: percentA = Math.floor((100 * poll.votesA) / totalVotes) || 0;
+  $: percentB = Math.floor((100 * poll.votesB) / totalVotes) || 0;
+
+  // tweened percentages
+  const tweenedA = tweened(0);
+  const tweenedB = tweened(0);
+
+  $: tweenedA.set(percentA);
+  $: tweenedB.set(percentB);
 
   const onVoteClicked = (option, id) => {
     PollStore.update((data) => {
@@ -39,7 +48,7 @@
         onVoteClicked("a", poll.id);
       }}
     >
-      <div class="percent percent-a" style="width: {percentA}%" />
+      <div class="percent percent-a" style="width: {$tweenedA}%" />
       <span>{poll.answerA} ({poll.votesA})</span>
     </div>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -50,7 +59,7 @@
         onVoteClicked("b", poll.id);
       }}
     >
-      <div class="percent percent-b" style="width: {percentB}%" />
+      <div class="percent percent-b" style="width: {$tweenedB}%" />
       <span>{poll.answerB} ({poll.votesB})</span>
     </div>
   </div>
